@@ -852,7 +852,7 @@ body {
 /* ============ WHATSAPP FLOATING BUTTON ============ */
 .whatsapp-float {
   position: fixed;
-  bottom: 52px;
+  bottom: 120px;
   left: 52px;
   width: 72px;
   height: 72px;
@@ -1150,8 +1150,8 @@ body {
   .whatsapp-float {
     width: 60px;
     height: 60px;
-    bottom: 40px;
-    left: 40px;
+    bottom: 90px;
+    left: 24px;
   }
 
   .whatsapp-float-icon svg {
