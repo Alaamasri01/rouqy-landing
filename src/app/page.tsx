@@ -367,7 +367,7 @@ export default function Home() {
     fontSize: "18px"
   }}
 >
-  Luxury Interior Design Studio
+  Luxury Interior Design
 </p>
         <div className="scroll-line" />
         <div className="side-text side-text-left">
