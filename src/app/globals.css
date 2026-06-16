@@ -1219,3 +1219,11 @@ body {
     text-align: left;
   }
 }
+
+.hidden-wa {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.8);
+  transition: all 0.4s ease;
+}
