@@ -1150,8 +1150,8 @@ body {
   .whatsapp-float {
     width: 60px;
     height: 60px;
-    bottom: 120px;
-    left: 24px;
+    bottom: 90px;
+    left: 15px;
   }
 
   .whatsapp-float-icon svg {
