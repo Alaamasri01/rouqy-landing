@@ -362,9 +362,9 @@ export default function Home() {
   style={{
     color: "#fff",
     textAlign: "center",
-    marginTop: "30px",
-    letterSpacing: "3px",
-    fontSize: "14px"
+    marginTop: "15px",
+    letterSpacing: "8px",
+    fontSize: "18px"
   }}
 >
   Luxury Interior Design Studio
