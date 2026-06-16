@@ -601,7 +601,8 @@ export default function Home() {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    marginLeft: "100px",
+    marginLeft: "150px",
+    marginRight: "150px",
     flexWrap: "wrap"
   }}
 >
