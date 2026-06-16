@@ -1306,3 +1306,31 @@ html[dir="rtl"] .field textarea {
     margin-inline-start: 12px;
   }
 }
+
+/* ============================================================
+   RTL HEADER FIX
+   In RTL the nav-links were anchored to the right (same side as the
+   centered logo), so the language button overlapped the logo.
+   Anchor the nav to the LEFT in Arabic instead — symmetrical to English.
+   ============================================================ */
+html[dir="rtl"] .nav-links {
+  right: auto;
+  left: 60px;
+}
+
+@media (max-width: 1024px) {
+  html[dir="rtl"] .nav-links {
+    right: auto;
+    left: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  html[dir="rtl"] .header {
+    justify-content: flex-end;
+  }
+  html[dir="rtl"] .nav-links {
+    right: auto;
+    left: 24px;
+  }
+}
