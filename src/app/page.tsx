@@ -358,6 +358,17 @@ export default function Home() {
           alt={siteData.brand.name}
           className={`hero-logo${heroShow ? ' show' : ''}`}
         />
+        <p
+  style={{
+    color: "#fff",
+    textAlign: "center",
+    marginTop: "30px",
+    letterSpacing: "3px",
+    fontSize: "14px"
+  }}
+>
+  Luxury Interior Design Studio
+</p>
         <div className="scroll-line" />
         <div className="side-text side-text-left">
           <span>{siteData.sideText.left}</span>
