@@ -594,34 +594,16 @@ export default function Home() {
           </div>
         </div>
       </section>
-<footer
-  style={{
-    padding: "60px 40px",
-    borderTop: "1px solid rgba(255,255,255,0.1)",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-    marginLeft: "150px",
-    marginRight: "150px",
-    flexWrap: "wrap"
-  }}
->
-  <div>
+<footer className="footer">
+  <div className="footer-left">
     <h3>ROUQY</h3>
     <p>Interior Design • 3D Visualization • Project Execution</p>
   </div>
 
-  <div style={{ textAlign: "right" }}>
+  <div className="footer-right">
     <p>© 2025 ROUQY. All Rights Reserved.</p>
 
-    <p
-      style={{
-        color: "rgba(255,255,255,0.35)",
-        marginTop: "12px",
-        fontSize: "11px",
-        letterSpacing: "3px"
-      }}
-    >
+    <p className="footer-credit">
       Designed by Ali Mahmoud
     </p>
   </div>
