@@ -601,6 +601,7 @@ export default function Home() {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-end",
+    marginLeft: "100px",
     flexWrap: "wrap"
   }}
 >
