@@ -26,7 +26,8 @@ export default function Home() {
   const [introRemoved, setIntroRemoved] = useState(false);
   const [heroShow, setHeroShow] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
+  const [hideWhatsapp, setHideWhatsapp] = useState(false);
+  const footerRef = useRef<HTMLElement | null>(null);
   // Contact form state
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
@@ -46,7 +47,22 @@ export default function Home() {
     }
     return () => { document.body.style.overflow = ''; };
   }, [galleryOpen, selectedImage]);
+useEffect(() => {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      setHideWhatsapp(entry.isIntersecting);
+    },
+    {
+      threshold: 0.1,
+    }
+  );
 
+  if (footerRef.current) {
+    observer.observe(footerRef.current);
+  }
+
+  return () => observer.disconnect();
+}, []);
   const aboutSectionRef = useRef<HTMLElement>(null);
   const drawPathRef = useRef<SVGPathElement>(null);
   const fillPathRef = useRef<SVGPathElement>(null);
@@ -594,7 +610,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-<footer className="footer">
+<footer ref={footerRef} className="footer">
   <div className="footer-left">
     <h3>ROUQY</h3>
     <p>Interior Design • 3D Visualization • Project Execution</p>
@@ -614,7 +630,7 @@ export default function Home() {
         href={`https://wa.me/${siteData.whatsapp.phone}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="whatsapp-float"
+        className={`whatsapp-float ${hideWhatsapp ? 'hidden-wa' : ''}`}
         aria-label="Chat on WhatsApp"
       >
         <span className="whatsapp-float-ring" />
