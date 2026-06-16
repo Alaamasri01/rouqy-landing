@@ -596,27 +596,33 @@ export default function Home() {
       </section>
 <footer
   style={{
-    padding: "80px 40px",
+    padding: "60px 40px",
     borderTop: "1px solid rgba(255,255,255,0.1)",
-    textAlign: "center"
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    flexWrap: "wrap"
   }}
 >
-  <h3>ROUQY</h3>
+  <div>
+    <h3>ROUQY</h3>
+    <p>Interior Design • 3D Visualization • Project Execution</p>
+  </div>
 
-  <p>Interior Design • 3D Visualization • Project Execution</p>
+  <div style={{ textAlign: "right" }}>
+    <p>© 2025 ROUQY. All Rights Reserved.</p>
 
-  <p>© 2025 ROUQY. All Rights Reserved.</p>
-
-  <p
-    style={{
-      color: "rgba(255,255,255,0.35)",
-      marginTop: "12px",
-      fontSize: "11px",
-      letterSpacing: "3px"
-    }}
-  >
-    Designed by Ali Mahmoud
-  </p>
+    <p
+      style={{
+        color: "rgba(255,255,255,0.35)",
+        marginTop: "12px",
+        fontSize: "11px",
+        letterSpacing: "3px"
+      }}
+    >
+      Designed by Ali Mahmoud
+    </p>
+  </div>
 </footer>
 
       {/* ====== WHATSAPP FLOATING BUTTON ====== */}
