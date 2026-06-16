@@ -1,10 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit } from "next/font/google";
+import { Outfit, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+import { LangProvider } from "@/lib/lang-context";
 
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "700"],
+});
+
+// Professional Arabic typeface so the Arabic text matches the brand's
+// refined feel instead of falling back to a default system font.
+const plexArabic = IBM_Plex_Sans_Arabic({
+  variable: "--font-arabic",
+  subsets: ["arabic"],
   weight: ["200", "300", "400", "500", "700"],
 });
 
@@ -103,9 +112,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${outfit.variable} antialiased bg-[#0b2b2a] text-white overflow-x-hidden`}
+        className={`${outfit.variable} ${plexArabic.variable} antialiased bg-[#0b2b2a] text-white overflow-x-hidden`}
       >
-        {children}
+        <LangProvider>{children}</LangProvider>
       </body>
     </html>
   );

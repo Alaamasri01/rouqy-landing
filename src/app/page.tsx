@@ -4,7 +4,8 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import siteData from '@/data/site-data.json';
+import { useLang } from '@/lib/lang-context';
+import LangSwitcher from '@/components/lang-switcher';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -13,15 +14,17 @@ if (typeof window !== 'undefined') {
 // Logo SVG path data (from client's inline SVG)
 const LOGO_PATH_D = "M345.55,167.19c0,6.3-2.72,11.08-8.16,14.35-2.81,1.53-5.64,2.28-8.47,2.28-2.19,0-4.24-.42-6.21-1.3-4.78-2.17-7.94-5.86-9.46-11.1-.44-1.5-1.53-2.28-3.27-2.28-1.08,0-1.95.55-2.61,1.64-3.03,5.66-4.55,11.65-4.55,17.95,0,2.61.2,5.22.64,7.83,1.53,8.93,7.19,16.43,16.98,22.53,3.47,1.53,6.04,3.91,7.67,7.16,1.61,3.27,2.43,6.77,2.43,10.46,0,12.85-2.17,25.56-6.52,38.18-8.91,27.2-24.59,46.9-47.01,59.08-11.3,6.08-24.25,9.24-38.82,9.46h-64.41v-162.48c0-79.26-64.23-143.49-143.47-143.49H10.03v113.01H1.5V1.5h208.23v133.7c0,12.67-5.04,24.83-14,33.78l-12.51,12.54,26.51,26.51v94.25c0,3.2.47,6.3,1.33,9.22,2.12,7.15,6.22,11.73,8.15,13.66,1.79,1.79,6.71,6.58,14.55,8.39,7.69,1.78,14.33-.19,19.56-1.75.75-.22,2.97-.9,5.75-2.09,13.27-5.66,22.84-15.23,28.72-28.72,2.83-6.74,4.22-14.04,4.22-21.87v-76.06c0-11.3,2.94-21.38,8.82-30.18,5.88-8.82,12.51-15.39,19.9-19.74,2.83-1.53,5.66-2.3,8.49-2.3,6.1,0,10.77,2.74,14.04,8.18,1.53,2.61,2.28,5.33,2.28,8.16Z";
 
-// Build projects array from JSON data
-const projects = siteData.projects.items.map(item => ({
-  bg: `url(${item.image}) center/cover`,
-  title: item.title,
-}));
-
-const SCROLL_COUNT = siteData.projects.scrollCount;
-
 export default function Home() {
+  // Active language content + direction. Everything textual now comes from `t`.
+  const { t, dir } = useLang();
+
+  // Build projects array from the active locale's data.
+  const projects = t.projects.items.map((item) => ({
+    bg: `url(${item.image}) center/cover`,
+    title: item.title,
+  }));
+  const SCROLL_COUNT = t.projects.scrollCount;
+
   const [introFading, setIntroFading] = useState(false);
   const [introRemoved, setIntroRemoved] = useState(false);
   const [heroShow, setHeroShow] = useState(false);
@@ -216,9 +219,16 @@ useEffect(() => {
       }
 
       // ---- Gallery horizontal scroll ----
+      // In RTL the track is anchored to the right, so it must travel in the
+      // opposite (positive X) direction. `scrollAmount` stays positive; only
+      // the sign of the translate flips.
       if (galleryTrackRef.current) {
+        const rtl = dir === 'rtl';
         gsap.to(galleryTrackRef.current, {
-          x: () => -(galleryTrackRef.current!.scrollWidth - window.innerWidth),
+          x: () => {
+            const amount = galleryTrackRef.current!.scrollWidth - window.innerWidth;
+            return rtl ? amount : -amount;
+          },
           ease: 'none',
           scrollTrigger: {
             trigger: projectsSectionRef.current,
@@ -258,13 +268,18 @@ useEffect(() => {
 
     gsapContextRef.current = ctx;
 
+    // New language = different text widths and gallery track size, so let
+    // ScrollTrigger recompute all pinned/scrubbed positions once laid out.
+    const refreshId = window.setTimeout(() => ScrollTrigger.refresh(), 100);
+
     return () => {
+      window.clearTimeout(refreshId);
       ctx.revert();
       document.querySelectorAll('.nav-links a').forEach((link) => {
         link.removeEventListener('click', handleNavClick);
       });
     };
-  }, []);
+  }, [dir, handleNavClick]);
 
   // ====== CONTACT FORM SUBMIT ======
   const handleContactSubmit = useCallback(async () => {
@@ -273,14 +288,14 @@ useEffect(() => {
 
     if (!formName.trim() || !formEmail.trim() || !formMessage.trim()) {
       setFormStatus('error');
-      setFormErrorMsg('Please fill in all fields.');
+      setFormErrorMsg(t.contact.errorAllFields);
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formEmail)) {
       setFormStatus('error');
-      setFormErrorMsg('Please enter a valid email address.');
+      setFormErrorMsg(t.contact.errorEmail);
       return;
     }
 
@@ -301,7 +316,7 @@ useEffect(() => {
 
       if (!res.ok) {
         setFormStatus('error');
-        setFormErrorMsg(data.error || 'Something went wrong. Please try again.');
+        setFormErrorMsg(data.error || t.contact.errorGeneric);
         return;
       }
 
@@ -315,11 +330,11 @@ useEffect(() => {
       }, 5000);
     } catch {
       setFormStatus('error');
-      setFormErrorMsg('Network error. Please check your connection and try again.');
+      setFormErrorMsg(t.contact.errorNetwork);
     } finally {
       setFormSending(false);
     }
-  }, [formName, formEmail, formMessage]);
+  }, [formName, formEmail, formMessage, t]);
 
   // Nav click handler
   const handleNavClick = useCallback((e: Event) => {
@@ -353,25 +368,26 @@ useEffect(() => {
             transition: 'opacity 0.8s ease',
           }}
         >
-          <img src="/logo.svg" className="intro-logo" alt={siteData.brand.name} />
+          <img src="/logo.svg" className="intro-logo" alt={t.brand.name} />
         </div>
       )}
 
       {/* ====== HEADER ====== */}
       <header className={`header${scrolled ? ' scrolled' : ''}`}>
         <div className="nav-links">
-          {siteData.nav.links.map((link, i) => (
+          {t.nav.links.map((link, i) => (
             <a key={i} href={link.href}>{link.label}</a>
           ))}
+          <LangSwitcher />
         </div>
-        <img src="/logo.svg" alt={siteData.brand.name} className="header-logo" />
+        <img src="/logo.svg" alt={t.brand.name} className="header-logo" />
       </header>
 
       {/* ====== HERO ====== */}
       <section className="hero">
         <img
           src="/text.svg"
-          alt={siteData.brand.name}
+          alt={t.brand.name}
           className={`hero-logo${heroShow ? ' show' : ''}`}
         />
         <p
@@ -383,14 +399,14 @@ useEffect(() => {
     fontSize: "18px"
   }}
 >
-  Luxury Interior Design
+  {t.brand.tagline}
 </p>
         <div className="scroll-line" />
         <div className="side-text side-text-left">
-          <span>{siteData.sideText.left}</span>
+          <span>{t.sideText.left}</span>
         </div>
         <div className="side-text side-text-right">
-          {siteData.sideText.right.map((text, i) => (
+          {t.sideText.right.map((text, i) => (
             <span key={i}>
               {i > 0 && <span className="side-text-line" />}
               <span>{text}</span>
@@ -403,14 +419,14 @@ useEffect(() => {
       <section className="about-section" id="about" ref={aboutSectionRef}>
         <div className="about-stage">
           <div className="about-content" ref={aboutContentRef}>
-            <span className="about-label">{siteData.about.label}</span>
+            <span className="about-label">{t.about.label}</span>
             <div className="about-line" />
             <h2>
-              <span className="bold">{siteData.about.headingBold}</span>
+              <span className="bold">{t.about.headingBold}</span>
               <br />
-              <span className="light">{siteData.about.headingLight}</span>
+              <span className="light">{t.about.headingLight}</span>
             </h2>
-            <p>{siteData.about.description}</p>
+            <p>{t.about.description}</p>
           </div>
           <div className="about-logo">
             <svg
@@ -445,10 +461,10 @@ useEffect(() => {
         <div className="gallery-wrap">
           <div className="gallery-track" ref={galleryTrackRef}>
             <div className="gallery-intro">
-              <span className="gallery-label">{siteData.projects.sectionLabel}</span>
+              <span className="gallery-label">{t.projects.sectionLabel}</span>
               <h2 className="gallery-heading">
-                <span className="bold">{siteData.projects.headingBold}</span>{' '}
-                <span className="light">{siteData.projects.headingLight}</span>
+                <span className="bold">{t.projects.headingBold}</span>{' '}
+                <span className="light">{t.projects.headingLight}</span>
               </h2>
             </div>
             {projects.slice(0, SCROLL_COUNT).map((project, i) => (
@@ -459,13 +475,13 @@ useEffect(() => {
                 onClick={() => setGalleryOpen(true)}
               >
                 <span className="gallery-img-title">{project.title}</span>
-                <span className="gallery-img-view">View Portfolio →</span>
+                <span className="gallery-img-view">{t.projects.viewPortfolio}</span>
               </div>
             ))}
             <div className="gallery-cta-card" onClick={() => setGalleryOpen(true)}>
-              <span className="gallery-cta-label">{siteData.projects.ctaLabel}</span>
-              <span className="gallery-cta-text">{siteData.projects.ctaText}</span>
-              <span className="gallery-cta-arrow">→</span>
+              <span className="gallery-cta-label">{t.projects.ctaLabel}</span>
+              <span className="gallery-cta-text">{t.projects.ctaText}</span>
+              <span className="gallery-cta-arrow">{dir === 'rtl' ? '←' : '→'}</span>
             </div>
           </div>
         </div>
@@ -477,7 +493,7 @@ useEffect(() => {
           <div className="gallery-overlay-inner" onClick={(e) => e.stopPropagation()}>
             <div className="gallery-overlay-header">
               <h2>
-                <span className="bold">{siteData.projects.headingBold}</span> <span className="light">{siteData.projects.headingLight}</span>
+                <span className="bold">{t.projects.headingBold}</span> <span className="light">{t.projects.headingLight}</span>
               </h2>
               <button className="gallery-close-btn" onClick={() => setGalleryOpen(false)}>✕</button>
             </div>
@@ -529,42 +545,42 @@ useEffect(() => {
       {/* ====== CONTACT ====== */}
       <section className="contact-section" id="contact" ref={contactSectionRef}>
         <div className="contact-inner" ref={contactInnerRef}>
-          <span className="contact-label">{siteData.contact.label}</span>
+          <span className="contact-label">{t.contact.label}</span>
           <h2 className="contact-title">
-            <span className="light">{siteData.contact.headingLight}</span>
+            <span className="light">{t.contact.headingLight}</span>
             <br />
-            <span className="bold">{siteData.contact.headingBold}</span>
+            <span className="bold">{t.contact.headingBold}</span>
           </h2>
           <div className="contact-grid">
             <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
               <div className="field">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">{t.contact.nameLabel}</label>
                 <input
                   type="text"
                   id="name"
-                  placeholder="Your name"
+                  placeholder={t.contact.namePlaceholder}
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   className={formStatus === 'error' && !formName.trim() ? 'field-error' : ''}
                 />
               </div>
               <div className="field">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">{t.contact.emailLabel}</label>
                 <input
                   type="email"
                   id="email"
-                  placeholder="your@email.com"
+                  placeholder={t.contact.emailPlaceholder}
                   value={formEmail}
                   onChange={(e) => setFormEmail(e.target.value)}
                   className={formStatus === 'error' && !formEmail.trim() ? 'field-error' : ''}
                 />
               </div>
               <div className="field">
-                <label htmlFor="message">Message</label>
+                <label htmlFor="message">{t.contact.messageLabel}</label>
                 <textarea
                   id="message"
                   rows={4}
-                  placeholder="Tell us about your project"
+                  placeholder={t.contact.messagePlaceholder}
                   value={formMessage}
                   onChange={(e) => setFormMessage(e.target.value)}
                   className={formStatus === 'error' && !formMessage.trim() ? 'field-error' : ''}
@@ -576,32 +592,32 @@ useEffect(() => {
                 onClick={handleContactSubmit}
                 disabled={formSending}
               >
-                {formSending ? 'Sending...' : formStatus === 'success' ? 'Sent!' : 'Send Message'}
+                {formSending ? t.contact.sendingLabel : formStatus === 'success' ? t.contact.sentLabel : t.contact.sendLabel}
               </button>
               {formStatus === 'error' && formErrorMsg && (
                 <span className="form-error-msg">{formErrorMsg}</span>
               )}
               {formStatus === 'success' && (
-                <span className="form-success-msg">Thank you! We&apos;ll get back to you within 24 hours.</span>
+                <span className="form-success-msg">{t.contact.successMsg}</span>
               )}
             </form>
             <div className="contact-details">
               <div className="detail">
-                <span className="detail-label">Email</span>
-                <a href={`mailto:${siteData.contact.email}`}>{siteData.contact.email}</a>
+                <span className="detail-label">{t.contact.emailDetailLabel}</span>
+                <a href={`mailto:${t.contact.email}`}>{t.contact.email}</a>
               </div>
               <div className="detail">
-                <span className="detail-label">Phone</span>
-                <a href={`tel:${siteData.contact.phone}`}>{siteData.contact.phoneDisplay}</a>
+                <span className="detail-label">{t.contact.phoneDetailLabel}</span>
+                <a href={`tel:${t.contact.phone}`} dir="ltr">{t.contact.phoneDisplay}</a>
               </div>
               <div className="detail">
-                <span className="detail-label">Studio</span>
-                <p>{siteData.contact.studio}</p>
+                <span className="detail-label">{t.contact.studioDetailLabel}</span>
+                <p>{t.contact.studio}</p>
               </div>
               <div className="detail">
-                <span className="detail-label">Follow</span>
+                <span className="detail-label">{t.contact.followLabel}</span>
                 <div className="socials">
-                  {Object.entries(siteData.contact.socials).map(([name, url]) => (
+                  {Object.entries(t.contact.socials).map(([name, url]) => (
                     <a key={name} href={url}>{name}</a>
                   ))}
                 </div>
@@ -612,26 +628,26 @@ useEffect(() => {
       </section>
 <footer ref={footerRef} className="footer">
   <div className="footer-left">
-    <h3>ROUQY</h3>
-    <p>Interior Design • 3D Visualization • Project Execution</p>
+    <h3>{t.brand.name}</h3>
+    <p>{t.footer.services}</p>
   </div>
 
   <div className="footer-right">
-    <p>© 2025 ROUQY. All Rights Reserved.</p>
+    <p>{t.footer.rights}</p>
 
     <p className="footer-credit">
-      Designed by Ali Mahmoud
+      {t.footer.credit}
     </p>
   </div>
 </footer>
 
       {/* ====== WHATSAPP FLOATING BUTTON ====== */}
       <a
-        href={`https://wa.me/${siteData.whatsapp.phone}`}
+        href={`https://wa.me/${t.whatsapp.phone}`}
         target="_blank"
         rel="noopener noreferrer"
         className={`whatsapp-float ${hideWhatsapp ? 'hidden-wa' : ''}`}
-        aria-label="Chat on WhatsApp"
+        aria-label="WhatsApp"
       >
         <span className="whatsapp-float-ring" />
         <svg className="whatsapp-float-rotating-text" viewBox="0 0 200 200">
@@ -639,11 +655,11 @@ useEffect(() => {
             <path id="textCircle" d="M 100, 100 m -72, 0 a 72,72 0 1,1 144,0 a 72,72 0 1,1 -144,0" />
           </defs>
           <text fill="rgba(255,255,255,0.7)" fontSize="11.5" letterSpacing="5" fontWeight="300">
-            <textPath href="#textCircle">{siteData.whatsapp.rotatingText}</textPath>
+            <textPath href="#textCircle">{t.whatsapp.rotatingText}</textPath>
           </text>
         </svg>
         <span className="whatsapp-float-icon">
-          <img src="/logo.svg" alt={siteData.brand.name} />
+          <img src="/logo.svg" alt={t.brand.name} />
         </span>
       </a>
     </>

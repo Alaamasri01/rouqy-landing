@@ -1227,3 +1227,82 @@ body {
   transform: scale(0.8);
   transition: all 0.4s ease;
 }
+
+/* ============================================================
+   BILINGUAL / RTL SUPPORT  (added for Arabic)
+   ============================================================ */
+
+/* Use the Arabic typeface automatically whenever the document is RTL.
+   The Latin font stays the default for English. */
+html[dir="rtl"] body,
+html[lang="ar"] body {
+  font-family: var(--font-arabic), 'IBM Plex Sans Arabic', 'Outfit', sans-serif;
+}
+
+/* Arabic reads better with slightly more line-height and no Latin-style
+   letter-spacing, which looks broken on Arabic script. */
+html[dir="rtl"] p,
+html[dir="rtl"] .about-content p,
+html[dir="rtl"] .contact-details p {
+  line-height: 1.9;
+  letter-spacing: 0;
+}
+
+/* The hero tagline and side texts use wide letter-spacing for the Latin
+   look; cancel it in Arabic so glyphs don't disconnect. */
+html[dir="rtl"] .side-text span,
+html[dir="rtl"] .gallery-label,
+html[dir="rtl"] .about-label,
+html[dir="rtl"] .contact-label,
+html[dir="rtl"] .detail-label {
+  letter-spacing: 0 !important;
+}
+
+/* Mirror the contact grid and details so labels/fields align to the right. */
+html[dir="rtl"] .contact-details,
+html[dir="rtl"] .about-content,
+html[dir="rtl"] .contact-form {
+  text-align: right;
+}
+
+html[dir="rtl"] .field input,
+html[dir="rtl"] .field textarea {
+  text-align: right;
+}
+
+/* Keep the WhatsApp button and its rotating ring in the same corner
+   regardless of direction (it's a fixed decorative element). */
+
+/* ============ LANGUAGE SWITCHER ============ */
+.lang-switcher {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  margin-inline-start: 18px;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.lang-switcher:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 768px) {
+  .lang-switcher {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+    margin-inline-start: 12px;
+  }
+}
