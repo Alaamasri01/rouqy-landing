@@ -1334,3 +1334,13 @@ html[dir="rtl"] .nav-links {
     left: 24px;
   }
 }
+
+/* ============================================================
+   ARABIC HERO LOGO SIZING
+   The Arabic wordmark (روقي) has a different aspect ratio than the
+   English one, so cap its width smaller to keep a similar visual
+   height and balance in the hero.
+   ============================================================ */
+.hero-logo-ar {
+  width: min(62vw, 1000px);
+}
