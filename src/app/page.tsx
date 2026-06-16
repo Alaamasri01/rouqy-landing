@@ -279,7 +279,11 @@ useEffect(() => {
         link.removeEventListener('click', handleNavClick);
       });
     };
-  }, [dir, handleNavClick]);
+    // `dir` re-runs the animation when language flips. `handleNavClick` is a
+    // stable useCallback defined below; intentionally omitted to avoid a
+    // temporal-dead-zone reference during module evaluation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dir]);
 
   // ====== CONTACT FORM SUBMIT ======
   const handleContactSubmit = useCallback(async () => {
