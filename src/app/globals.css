@@ -1344,3 +1344,12 @@ html[dir="rtl"] .nav-links {
 .hero-logo-ar {
   width: min(62vw, 1000px);
 }
+
+/* ============================================================
+   RTL SCROLLED LOGO DIRECTION
+   On scroll the logo slides to the right in English; mirror it to
+   slide left in Arabic instead.
+   ============================================================ */
+html[dir="rtl"] .header.scrolled .header-logo {
+  transform: translateX(-900px);
+}
