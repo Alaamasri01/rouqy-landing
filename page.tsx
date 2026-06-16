@@ -390,9 +390,9 @@ useEffect(() => {
       {/* ====== HERO ====== */}
       <section className="hero">
         <img
-          src="/text.svg"
+          src={dir === 'rtl' ? '/text-ar.svg' : '/text.svg'}
           alt={t.brand.name}
-          className={`hero-logo${heroShow ? ' show' : ''}`}
+          className={`hero-logo${dir === 'rtl' ? ' hero-logo-ar' : ''}${heroShow ? ' show' : ''}`}
         />
         <p
   style={{
