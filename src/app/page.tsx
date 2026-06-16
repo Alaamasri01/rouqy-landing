@@ -594,6 +594,30 @@ export default function Home() {
           </div>
         </div>
       </section>
+<footer
+  style={{
+    padding: "80px 40px",
+    borderTop: "1px solid rgba(255,255,255,0.1)",
+    textAlign: "center"
+  }}
+>
+  <h3>ROUQY</h3>
+
+  <p>Interior Design • 3D Visualization • Project Execution</p>
+
+  <p>© 2025 ROUQY. All Rights Reserved.</p>
+
+  <p
+    style={{
+      color: "rgba(255,255,255,0.35)",
+      marginTop: "12px",
+      fontSize: "11px",
+      letterSpacing: "3px"
+    }}
+  >
+    Designed by Ali Mahmoud
+  </p>
+</footer>
 
       {/* ====== WHATSAPP FLOATING BUTTON ====== */}
       <a
