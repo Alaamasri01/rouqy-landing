@@ -1383,7 +1383,7 @@ html[dir="rtl"] .header.scrolled .header-logo {
    spacing baked in by the designer. Sized to balance the English hero.
    ============================================================ */
 .hero-combined-ar {
-  width: min(92vw, 1200px) !important;
+  width: min(102vw, 1400px) !important;
   height: auto;
 }
 
