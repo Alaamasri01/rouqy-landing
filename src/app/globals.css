@@ -1342,7 +1342,7 @@ html[dir="rtl"] .nav-links {
    height and balance in the hero.
    ============================================================ */
 .hero-logo-ar {
-  width: min(95vw, 1600px);
+  width: min(62vw, 1000px);
 }
 
 /* ============================================================
@@ -1361,7 +1361,12 @@ html[dir="rtl"] .header.scrolled .header-logo {
    ============================================================ */
 .hero-tagline-svg {
   display: block;
-  margin-top: 5px;
+  /* المسافة بين "روقي" والعبارة. صغّر الرقم تقرب، كبّره تبعد.
+     تقدر تستخدم قيمة سالبة (مثل -20px) لتسحبها لفوق وتلغي أي فراغ. */
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
   width: min(22vw, 280px);
   height: auto;
 }
@@ -1369,5 +1374,21 @@ html[dir="rtl"] .header.scrolled .header-logo {
 @media (max-width: 768px) {
   .hero-tagline-svg {
     width: min(55vw, 260px);
+  }
+}
+
+/* ============================================================
+   ARABIC COMBINED HERO (روقي + tagline in one SVG)
+   Single wordmark that already includes the tagline with the exact
+   spacing baked in by the designer. Sized to balance the English hero.
+   ============================================================ */
+.hero-combined-ar {
+  width: min(60vw, 760px) !important;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .hero-combined-ar {
+    width: min(80vw, 420px) !important;
   }
 }
