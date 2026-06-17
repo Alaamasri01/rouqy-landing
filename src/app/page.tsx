@@ -389,29 +389,32 @@ useEffect(() => {
 
       {/* ====== HERO ====== */}
       <section className="hero">
-        <img
-          src={dir === 'rtl' ? '/text-ar.svg' : '/text.svg'}
-          alt={t.brand.name}
-          className={`hero-logo${dir === 'rtl' ? ' hero-logo-ar' : ''}${heroShow ? ' show' : ''}`}
-        />
         {dir === 'rtl' ? (
+          /* Arabic: combined wordmark + tagline in one SVG (DG Trika) */
           <img
-            src="/tagline-ar.svg"
-            alt={t.brand.tagline}
-            className="hero-tagline-svg"
+            src="/hero-ar.svg"
+            alt={t.brand.name}
+            className={`hero-logo hero-combined-ar${heroShow ? ' show' : ''}`}
           />
         ) : (
-          <p
-            style={{
-              color: "#fff",
-              textAlign: "center",
-              marginTop: "15px",
-              letterSpacing: "8px",
-              fontSize: "18px"
-            }}
-          >
-            {t.brand.tagline}
-          </p>
+          <>
+            <img
+              src="/text.svg"
+              alt={t.brand.name}
+              className={`hero-logo${heroShow ? ' show' : ''}`}
+            />
+            <p
+              style={{
+                color: "#fff",
+                textAlign: "center",
+                marginTop: "15px",
+                letterSpacing: "8px",
+                fontSize: "18px"
+              }}
+            >
+              {t.brand.tagline}
+            </p>
+          </>
         )}
         <div className="scroll-line" />
         <div className="side-text side-text-left">
