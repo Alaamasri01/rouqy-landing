@@ -417,7 +417,30 @@ useEffect(() => {
           </>
         )}
         <div className="scroll-line" />
-      
+      {dir === 'rtl' ? (
+          <>
+            <div className="side-text side-text-left side-text-svg-wrap">
+              <img src="/sidetext-left-ar.svg" alt={t.sideText.left} className="side-text-svg" />
+            </div>
+            <div className="side-text side-text-right side-text-svg-wrap">
+              <img src="/sidetext-right-ar.svg" alt="" className="side-text-svg" />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="side-text side-text-left">
+              <span>{t.sideText.left}</span>
+            </div>
+            <div className="side-text side-text-right">
+              {t.sideText.right.map((text, i) => (
+                <span key={i}>
+                  {i > 0 && <span className="side-text-line" />}
+                  <span>{text}</span>
+                </span>
+              ))}
+            </div>
+          </>
+        )}
         </div>
       </section>
 
