@@ -1361,7 +1361,7 @@ html[dir="rtl"] .header.scrolled .header-logo {
    ============================================================ */
 .hero-tagline-svg {
   display: block;
-  margin: 18px auto 0;
+  margin: 10px auto 0;
   width: min(22vw, 280px);
   height: auto;
 }
