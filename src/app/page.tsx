@@ -398,8 +398,8 @@ useEffect(() => {
   style={{
     color: "#fff",
     textAlign: "center",
-    marginTop: "8px",
-    letterSpacing: "8px",
+    marginTop: "5px",
+    letterSpacing: "15px",
     fontSize: "18px"
   }}
 >
