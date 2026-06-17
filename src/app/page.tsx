@@ -394,17 +394,25 @@ useEffect(() => {
           alt={t.brand.name}
           className={`hero-logo${dir === 'rtl' ? ' hero-logo-ar' : ''}${heroShow ? ' show' : ''}`}
         />
-        <p
-  style={{
-    color: "#fff",
-    textAlign: "center",
-    marginTop: "5px",
-    letterSpacing: "15px",
-    fontSize: "18px"
-  }}
->
-  {t.brand.tagline}
-</p>
+        {dir === 'rtl' ? (
+          <img
+            src="/tagline-ar.svg"
+            alt={t.brand.tagline}
+            className="hero-tagline-svg"
+          />
+        ) : (
+          <p
+            style={{
+              color: "#fff",
+              textAlign: "center",
+              marginTop: "15px",
+              letterSpacing: "8px",
+              fontSize: "18px"
+            }}
+          >
+            {t.brand.tagline}
+          </p>
+        )}
         <div className="scroll-line" />
         <div className="side-text side-text-left">
           <span>{t.sideText.left}</span>
