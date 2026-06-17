@@ -1392,3 +1392,19 @@ html[dir="rtl"] .header.scrolled .header-logo {
     width: min(80vw, 420px) !important;
   }
 }
+
+.side-text-svg-wrap {
+  pointer-events: none;
+}
+
+.side-text-svg {
+  display: block;
+  height: min(46vh, 420px);
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .side-text-svg {
+    height: min(38vh, 300px);
+  }
+}
