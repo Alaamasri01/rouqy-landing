@@ -158,7 +158,7 @@ body {
 }
 
 .header.scrolled .header-logo {
-  transform: translateX(900px);
+  transform: translateX(870px);
 }
 
 /* ============ HERO ============ */
@@ -1351,7 +1351,7 @@ html[dir="rtl"] .nav-links {
    slide left in Arabic instead.
    ============================================================ */
 html[dir="rtl"] .header.scrolled .header-logo {
-  transform: translateX(-900px);
+  transform: translateX(-840px);
 }
 
 /* ============================================================
