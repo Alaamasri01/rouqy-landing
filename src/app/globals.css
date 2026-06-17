@@ -1351,7 +1351,7 @@ html[dir="rtl"] .nav-links {
    slide left in Arabic instead.
    ============================================================ */
 html[dir="rtl"] .header.scrolled .header-logo {
-  transform: translateX(-840px);
+  transform: translateX(-820px);
 }
 
 /* ============================================================
