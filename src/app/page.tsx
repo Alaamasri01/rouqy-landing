@@ -441,7 +441,6 @@ useEffect(() => {
             </div>
           </>
         )}
-        </div>
       </section>
 
       {/* ====== ABOUT ====== */}
