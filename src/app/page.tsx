@@ -449,11 +449,19 @@ useEffect(() => {
           <div className="about-content" ref={aboutContentRef}>
             <span className="about-label">{t.about.label}</span>
             <div className="about-line" />
-            <h2>
-              <span className="bold">{t.about.headingBold}</span>
-              <br />
-              <span className="light">{t.about.headingLight}</span>
-            </h2>
+{dir === 'rtl' ? (
+              <img
+                src="/about-heading-ar.svg"
+                alt={`${t.about.headingBold} ${t.about.headingLight}`}
+                className="about-heading-svg"
+              />
+            ) : (
+              <h2>
+                <span className="bold">{t.about.headingBold}</span>
+                <br />
+                <span className="light">{t.about.headingLight}</span>
+              </h2>
+            )}
             <p>{t.about.description}</p>
           </div>
           <div className="about-logo">
