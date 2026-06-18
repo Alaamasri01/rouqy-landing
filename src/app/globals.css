@@ -1408,3 +1408,16 @@ html[dir="rtl"] .header.scrolled .header-logo {
     height: min(38vh, 300px);
   }
 }
+.about-heading-svg {
+  display: block;
+  width: min(34vw, 460px);
+  height: auto;
+  margin-bottom: 36px;
+}
+
+@media (max-width: 768px) {
+  .about-heading-svg {
+    width: min(72vw, 380px);
+    margin-bottom: 28px;
+  }
+}
