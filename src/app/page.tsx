@@ -417,7 +417,7 @@ useEffect(() => {
           </>
         )}
         <div className="scroll-line" />
-      {dir === 'rtl' ? (
+        {dir === 'rtl' ? (
           <>
             <div className="side-text side-text-left side-text-svg-wrap">
               <img src="/sidetext-left-ar.svg" alt={t.sideText.left} className="side-text-svg" />
@@ -449,7 +449,7 @@ useEffect(() => {
           <div className="about-content" ref={aboutContentRef}>
             <span className="about-label">{t.about.label}</span>
             <div className="about-line" />
-{dir === 'rtl' ? (
+            {dir === 'rtl' ? (
               <img
                 src="/about-heading-ar.svg"
                 alt={`${t.about.headingBold} ${t.about.headingLight}`}
